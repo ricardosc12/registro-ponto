@@ -39,7 +39,23 @@ class api {
                 resolve({status:false})
             })
         }
+    }
+
+    static historico(): Promise<any> {
         
+        const url = '/api/historico';
+
+        const options: RequestInit = {
+            method: 'GET'
+        };
+        try {
+            return api.request(url, options);
+        }
+        catch {
+            return new Promise(resolve=>{
+                resolve({status:false})
+            })
+        }
     }
 }
 

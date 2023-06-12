@@ -1,0 +1,33 @@
+.header {
+
+}
+
+.register {
+
+}
+
+.list {
+
+}
+
+
+.icon_status {
+    padding: 4px 12px;
+    border-radius: 100px;
+    background-color: rgb(253, 255, 253);
+    border: 1px solid rgb(105, 241, 112);
+}
+.icon_status > p {
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.01rem;
+}
+.icon_status > p::after{
+    content: '';
+    display: flex;
+    width: 4px;
+    height: 4px;
+    border-radius: 5px;
+    background-color: rgb(105, 241, 112);
+    margin-left: 6px;
+}
