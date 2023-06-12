@@ -1,4 +1,4 @@
 export interface RegistrarParams {
-    data: Date, 
+    data: string, 
     endereco: string
 }

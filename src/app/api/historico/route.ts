@@ -6,7 +6,7 @@ export async function GET(request: Request) {
     try {
         const client = await sql.connect();
 
-        const { rows: registro } = await client.sql`SELECT * FROM pontos;`;
+        const { rows: registro } = await client.sql`SELECT * FROM pontos ORDER BY id DESC;`;
 
         return NextResponse.json({ status: true, data: registro }, { status: 200 })
     }
