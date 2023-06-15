@@ -5,7 +5,7 @@ import { RegistrarParams } from "@/server/interfaces"
 import style from './style.module.css'
 import Image from "next/image"
 import { useEffect, useState } from "react"
-import { calcTime, formatDate, formatIsoDate, formatTime } from "@/utils/formatDate"
+import { calcTime, formatDate, formatIsoDate, formatTime, formatTimeFromMile, getTimeDif, isDifferentDay } from "@/utils/formatDate"
 import bg from '@/images/back.png'
 
 const invokerImg = "https://steamuserimages-a.akamaihd.net/ugc/770618511055025175/3253214E3E3DB115DC56F1F3D549260321BC2FCA/?imw=512&&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false"
@@ -13,6 +13,30 @@ const invokerImg = "https://steamuserimages-a.akamaihd.net/ugc/77061851105502517
 const moke = {
     "status": true,
     "data": [
+        {
+            "id": 13,
+            "data": "2023-06-15T17:45:52.392Z",
+            "endereco": "",
+            "tipo_ponto": "Entrada"
+        },
+        {
+            "id": 12,
+            "data": "2023-06-15T17:43:36.365Z",
+            "endereco": "",
+            "tipo_ponto": "Saída"
+        },
+        {
+            "id": 11,
+            "data": "2023-06-15T17:41:52.392Z",
+            "endereco": "",
+            "tipo_ponto": "Entrada"
+        },
+        {
+            "id": 10,
+            "data": "2023-06-15T17:41:36.365Z",
+            "endereco": "",
+            "tipo_ponto": "Saída"
+        },
         {
             "id": 9,
             "data": "2023-06-12T13:28:37.962Z",
@@ -29,33 +53,72 @@ export default function HomeC() {
         loading: false
     })
 
-    // useEffect(() => {
-    //     (async () => {
-    //         if (!data.loading) {
-    //             setData(prev => ({ ...prev, loading: true }))
+    useEffect(() => {
+        (async () => {
+            if (!data.loading) {
+                setData(prev => ({ ...prev, loading: true }))
 
-    //             const resp = await api.historico()
+                const resp = await api.historico()
 
-    //             setData({
-    //                 loading: false,
-    //                 historico: Array.isArray(resp.data) ? resp.data : []
-    //             })
-    //         }
+                // setData({
+                //     loading: false,
+                //     historico: Array.isArray(resp.data) ? resp.data : []
+                // })
+            }
 
-    //     })();
+        })();
 
-    // }, [])
+    }, [])
 
     async function handleRegister() {
+        const data = new Date(moke.data[0].data)
+        const today = new Date()
 
-        const params: RegistrarParams = {
-            data: formatIsoDate(new Date()),
-            endereco: ""
+        const hist_today: any = [
+
+        ]
+
+        let atrasado;
+
+        if (moke.data[0].tipo_ponto == "Entrada" && (data.getDate() != today.getDate() || data.getFullYear() != today.getFullYear() || today.getMonth() != data.getMonth())) {
+            atrasado = formatDate(data.toDateString())
+            console.log("PONTO DO DIA ", atrasado)
         }
+
+        moke.data.every(item => {
+            if (!isDifferentDay(new Date(item.data))) {
+                hist_today.unshift(item)
+                return true;
+            }
+            if (item.tipo_ponto == "Entrada") {
+                hist_today.shift()
+            }
+            return false;
+        })
+
+
+
+        let data_total = 0;
+
+        for (let index = 0; index < hist_today.length; index++) {
+            if (index == hist_today.length - 1) {
+                data_total += getTimeDif(new Date(hist_today[index].data), new Date())
+            }
+            else {
+                data_total += getTimeDif(new Date(hist_today[index].data), new Date(hist_today[index + 1].data))
+                index++
+            }
+        }
+        console.table(hist_today)
+        console.log(formatTimeFromMile(data_total))
+        // const params: RegistrarParams = {
+        //     data: formatIsoDate(new Date()),
+        //     endereco: ""
+        // }
 
         // const resp = await api.registrar(params)
 
-        console.log(params)
+        // console.log(params)
     }
 
     // async function handleHistorico() {
@@ -68,7 +131,7 @@ export default function HomeC() {
 
     return (
         <div className={style.root_home}>
-            <div className={style.back} style={{backgroundImage:`url(${bg.src})`}}></div>
+            <div className={style.back} style={{ backgroundImage: `url(${bg.src})` }}></div>
             <div className="paper-modal flex-col py-4 px-5">
                 <div className="mb-5">
                     <span className="flex justify-between items-center">
