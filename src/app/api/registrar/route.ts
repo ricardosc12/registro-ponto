@@ -15,7 +15,7 @@ export async function POST(request: Request) {
         if (registro.length > 0 && registro[0].tipo_ponto == "Entrada") {
             registro_tipo = "Saída"
         }
-        console.log(resp.data)
+
         const sql_resp = await client.sql`
             INSERT INTO pontos (data, endereco, tipo_ponto) 
             VALUES (${resp.data}, ${resp.endereco}, ${registro_tipo});`;
@@ -23,8 +23,6 @@ export async function POST(request: Request) {
         if (sql_resp.rowCount != 1) {
             throw 'error'
         }
-
-        console.log("RESP: ", sql_resp)
 
         return NextResponse.json({ status: true }, { status: 200 })
     }
