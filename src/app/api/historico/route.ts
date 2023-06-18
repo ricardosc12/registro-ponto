@@ -7,7 +7,7 @@ export async function GET(request: Request) {
         const client = await sql.connect();
 
         const { rows: registro } = await client.sql`SELECT * FROM pontos ORDER BY id DESC;`;
-
+        console.log(registro)
         return NextResponse.json({ status: true, data: registro }, { status: 200 })
     }
     catch {

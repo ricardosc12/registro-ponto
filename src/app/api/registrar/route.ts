@@ -23,7 +23,9 @@ export async function POST(request: Request) {
         if (sql_resp.rowCount != 1) {
             throw 'error'
         }
-        
+
+        console.log("RESP: ", sql_resp)
+
         return NextResponse.json({ status: true }, { status: 200 })
     }
     catch {

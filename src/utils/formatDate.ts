@@ -50,3 +50,34 @@ export function formatIsoDate(dataAtual: Date) {
 
     return dataAtualizada.toISOString();
 }
+
+export function isDifferentDay(data: Date) {
+    const today = new Date()
+
+    if (data.getDate() != today.getDate() || data.getFullYear() != today.getFullYear() || today.getMonth() != data.getMonth()) {
+        return true
+    }
+    return false
+}
+
+export function getTimeDif(data1: Date, data2: Date) {
+    return data2.getTime() - data1.getTime()
+}
+
+export function formatTimeFromMile(milissegundos: number) {
+    // Converte os milissegundos em segundos
+    const segundos = Math.floor(milissegundos / 1000);
+
+    // Calcula as horas, minutos e segundos
+    const horas = Math.floor(segundos / 3600);
+    const minutos = Math.floor((segundos % 3600) / 60);
+    const segundosRestantes = segundos % 60;
+
+    // Formata os valores com dois dígitos
+    const horasFormatadas = String(horas).padStart(2, '0');
+    const minutosFormatados = String(minutos).padStart(2, '0');
+    const segundosFormatados = String(segundosRestantes).padStart(2, '0');
+
+    // Retorna a string no formato HH:MM:SS
+    return horasFormatadas + ':' + minutosFormatados + ':' + segundosFormatados;
+}
