@@ -1,7 +1,7 @@
 import { sql } from '@vercel/postgres';
 import { NextResponse } from 'next/server'
 
-export async function GET(request: Request) {
+export async function GET() {
 
     try {
         const client = await sql.connect();
@@ -10,6 +10,7 @@ export async function GET(request: Request) {
 
         return NextResponse.json({ status: true, data: registro }, { status: 200 })
     }
+    
     catch {
         return NextResponse.json({ status: false }, { status: 200 })
     }
